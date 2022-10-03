@@ -24,6 +24,7 @@ class Weather {
   getForecast(double latitude, double longitude) async {
     String url =
         "$_apiRootWeather$_forecastParams&latitude=$latitude&longitude=$longitude";
-    forecastResult = await _api.callAPI(url);
+    forecastResult =
+        WeatherForecastResult.fromJson(jsonDecode(await _api.callAPI(url)));
   }
 }

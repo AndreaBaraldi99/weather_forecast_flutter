@@ -7,8 +7,6 @@ import 'package:weather_forecast/weather_forecast_lib/weather.dart';
 
 void main() {
   runApp(const MyApp());
-  Weather weather = new Weather();
-  weather.getForecast(45.5, 10.0);
 }
 
 class MyApp extends StatelessWidget {
