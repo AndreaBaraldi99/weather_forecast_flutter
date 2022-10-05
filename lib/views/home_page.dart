@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:weather_forecast/weather_forecast_lib/geolocator.dart';
 import 'package:weather_forecast/weather_forecast_lib/weather.dart';
 import 'package:weather_forecast/weather_forecast_lib/weatherforecastresult.dart';
+import 'globals.dart' as globals;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,9 +26,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   getData() async {
-    Position position = await geolocation.determinePosition();
-    forecastResult =
-        await weather.getForecast(position.latitude, position.longitude);
+    globals.notify.addListener(() {
+      getData();
+    });
+    if (globals.notify.value.isEmpty == false) {
+      forecastResult = await weather.getForecast(0, 0, globals.notify.value);
+    } else {
+      Position position = await geolocation.determinePosition();
+      forecastResult =
+          await weather.getForecast(position.latitude, position.longitude);
+    }
     if (forecastResult.daily?.time?.length != null) {
       itemsNumber = forecastResult.daily!.time!.length;
     }
@@ -38,11 +46,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Weather Forecast ☀️'),
-      ),
-      body: Visibility(
+    return Container(
+      height: 300,
+      child: Visibility(
         visible: isLoaded,
         child: ListView.separated(
             separatorBuilder: (context, index) => const SizedBox(
@@ -79,7 +85,7 @@ Container day(double? maxTemp, double? minTemp, {String date = ""}) {
         Column(
           children: [
             Text(
-              maxTemp.toString(),
+              '${maxTemp.toString()}°',
               style: TextStyle(color: Colors.red[700]),
             )
           ],
@@ -88,7 +94,7 @@ Container day(double? maxTemp, double? minTemp, {String date = ""}) {
         Column(
           children: [
             Text(
-              minTemp.toString(),
+              '${minTemp.toString()}°',
               style: TextStyle(color: Colors.blue[900]),
             )
           ],

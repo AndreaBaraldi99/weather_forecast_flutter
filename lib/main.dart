@@ -3,7 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:weather_forecast/views/form.dart';
 import 'package:weather_forecast/views/home_page.dart';
+import 'package:weather_forecast/views/map_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +20,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Weather Forecast ☀️')),
+        body: ListView(
+          physics: const NeverScrollableScrollPhysics(),
+          children: const [MyCustomForm(), HomePage(), MapSample()],
+        ),
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
