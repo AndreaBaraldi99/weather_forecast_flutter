@@ -23,6 +23,8 @@ class WeatherForecastResult {
       this.dailyUnits,
       this.daily});
 
+  WeatherForecastResult.noParam();
+
   WeatherForecastResult.fromJson(Map<String, dynamic> json) {
     latitude = json['latitude'];
     longitude = json['longitude'];
@@ -32,9 +34,9 @@ class WeatherForecastResult {
     timezoneAbbreviation = json['timezone_abbreviation'];
     elevation = json['elevation'];
     dailyUnits = json['daily_units'] != null
-        ? new DailyUnits.fromJson(json['daily_units'])
+        ? DailyUnits.fromJson(json['daily_units'])
         : null;
-    daily = json['daily'] != null ? new Daily.fromJson(json['daily']) : null;
+    daily = json['daily'] != null ? Daily.fromJson(json['daily']) : null;
   }
 
   Map<String, dynamic> toJson() {

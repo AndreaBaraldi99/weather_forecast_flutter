@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 
 class API {
-  Future<String> callAPI(url) async {
+  Future<String> callAPI(String url) async {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
