@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_forecast/views/form.dart';
 import 'package:weather_forecast/views/home_page.dart';
+import 'package:weather_forecast/views/location_label.dart';
 import 'package:weather_forecast/views/map_page.dart';
 
 void main() {
@@ -24,7 +25,12 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(title: const Text('Weather Forecast ☀️')),
         body: ListView(
           physics: const NeverScrollableScrollPhysics(),
-          children: const [MyCustomForm(), HomePage(), MapSample()],
+          children: const [
+            MyCustomForm(),
+            LocationLabel(),
+            HomePage(),
+            MapSample()
+          ],
         ),
       ),
       debugShowCheckedModeBanner: false,
