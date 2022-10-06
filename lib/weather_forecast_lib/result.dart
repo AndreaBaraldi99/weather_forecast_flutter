@@ -6,7 +6,7 @@ class Result {
   String? number;
   String? postalCode;
   String? street;
-  int? confidence;
+  Object? confidence;
   String? region;
   String? regionCode;
   String? county;

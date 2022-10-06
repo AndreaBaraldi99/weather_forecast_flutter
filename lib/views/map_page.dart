@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'package:weather_forecast/weather_forecast_lib/weather.dart';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
+import 'globals.dart' as globals;
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -20,6 +21,10 @@ class MapSampleState extends State<MapSample> {
   CameraPosition _kGooglePlex = const CameraPosition(target: LatLng(0, 0));
   var isLoaded = false;
   Set<Marker> markers = {};
+  Weather weather = Weather();
+  double latitude = 0;
+  double longitude = 0;
+  var changed = false;
 
   @override
   void initState() {
@@ -28,13 +33,29 @@ class MapSampleState extends State<MapSample> {
   }
 
   getLocation() async {
-    Position position = await geolocation.determinePosition();
+    globals.notify.addListener(() {
+      getLocation();
+    });
+    if (globals.notify.value.isEmpty == false) {
+      var forecastResult =
+          await weather.getForecast(0, 0, globals.notify.value);
+      latitude = forecastResult.latitude!;
+      longitude = forecastResult.longitude!;
+      GoogleMapController controller = await _controller.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: LatLng(latitude, longitude), zoom: 13)));
+    } else {
+      Position position = await geolocation.determinePosition();
+      latitude = position.latitude;
+      longitude = position.longitude;
+      _kGooglePlex =
+          CameraPosition(target: LatLng(latitude, longitude), zoom: 13);
+    }
+    //_kGooglePlex = CameraPosition(target: LatLng(latitude, longitude), zoom: 13);
     setState(() {
-      _kGooglePlex = CameraPosition(
-          target: LatLng(position.latitude, position.longitude), zoom: 13);
       markers.add(Marker(
           markerId: const MarkerId('id'),
-          position: LatLng(position.latitude, position.longitude)));
+          position: LatLng(latitude, longitude)));
       isLoaded = true;
     });
   }
@@ -49,8 +70,7 @@ class MapSampleState extends State<MapSample> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      height: 200,
-      width: 200,
+      height: 250,
       child: Visibility(
         visible: isLoaded,
         child: GoogleMap(

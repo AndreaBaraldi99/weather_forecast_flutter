@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_forecast/views/home_page.dart';
 import 'globals.dart' as globals;
 
 class MyCustomForm extends StatefulWidget {
@@ -43,7 +42,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               // The validator receives the text that the user has entered.
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please enter location';
                 }
                 return null;
               },
@@ -60,6 +59,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                       const SnackBar(content: Text('Searching...')),
                     );
                     globals.notify.value = cityController.text;
+                    FocusManager.instance.primaryFocus?.unfocus();
                   }
                 },
                 child: const Text('Search'),

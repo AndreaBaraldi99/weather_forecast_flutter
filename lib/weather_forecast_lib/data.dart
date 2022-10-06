@@ -9,7 +9,7 @@ class Data {
     if (json['data'] != null) {
       data = <Result>[];
       json['data'].forEach((v) {
-        data!.add(new Result.fromJson(v));
+        data!.add(Result.fromJson(v));
       });
     }
   }
