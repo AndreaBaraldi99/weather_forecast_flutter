@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   Geolocation geolocation = Geolocation();
   var isLoaded = false;
   int itemsNumber = 0;
+  final ScrollController _firstController = ScrollController();
 
   @override
   void initState() {
@@ -50,21 +51,35 @@ class _HomePageState extends State<HomePage> {
       height: 300,
       child: Visibility(
         visible: isLoaded,
-        child: ListView.separated(
-            separatorBuilder: (context, index) => const SizedBox(
-                  height: 10,
-                ),
-            padding: const EdgeInsets.all(10),
-            itemCount: itemsNumber,
-            itemBuilder: (context, index) {
-              return day(
-                  forecastResult.daily?.temperature2mMax?[index],
-                  forecastResult.daily?.temperature2mMin?[index],
-                  forecastResult.daily?.weatherIcon[index],
-                  date: forecastResult.daily!.time![index]);
-            }),
+        child: RawScrollbar(
+          thumbColor: Colors.white54,
+          crossAxisMargin: 5,
+          thumbVisibility: true,
+          controller: _firstController,
+          radius: const Radius.circular(10),
+          child: ListView.separated(
+              controller: _firstController,
+              separatorBuilder: (context, index) => const SizedBox(
+                    height: 10,
+                  ),
+              padding: const EdgeInsets.all(15),
+              itemCount: itemsNumber,
+              itemBuilder: (context, index) {
+                return day(
+                    forecastResult.daily?.temperature2mMax?[index],
+                    forecastResult.daily?.temperature2mMin?[index],
+                    forecastResult.daily?.weatherIcon[index],
+                    date: forecastResult.daily!.time![index]);
+              }),
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    weather.closeDbConnection();
   }
 }
 
