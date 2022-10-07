@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 300,
       child: Visibility(
         visible: isLoaded,
@@ -57,8 +57,10 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(10),
             itemCount: itemsNumber,
             itemBuilder: (context, index) {
-              return day(forecastResult.daily?.temperature2mMax?[index],
+              return day(
+                  forecastResult.daily?.temperature2mMax?[index],
                   forecastResult.daily?.temperature2mMin?[index],
+                  forecastResult.daily?.weatherIcon[index],
                   date: forecastResult.daily!.time![index]);
             }),
       ),
@@ -66,14 +68,16 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Container day(double? maxTemp, double? minTemp, {String date = ""}) {
+Container day(double? maxTemp, double? minTemp, String? weatherIcon,
+    {String date = ""}) {
   return Container(
     decoration: BoxDecoration(
+        color: Colors.blue[100],
         border: Border.all(
-          color: Colors.blue,
+          color: (Colors.white),
         ),
         borderRadius: const BorderRadius.all(Radius.circular(10))),
-    padding: const EdgeInsets.all(20),
+    padding: const EdgeInsets.all(15),
     child: Row(
       children: [
         Column(
@@ -81,7 +85,7 @@ Container day(double? maxTemp, double? minTemp, {String date = ""}) {
             Text(date, style: const TextStyle(fontWeight: FontWeight.bold))
           ],
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 12),
         Column(
           children: [
             Text(
@@ -90,12 +94,21 @@ Container day(double? maxTemp, double? minTemp, {String date = ""}) {
             )
           ],
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 12),
         Column(
           children: [
             Text(
               '${minTemp.toString()}°',
               style: TextStyle(color: Colors.blue[900]),
+            )
+          ],
+        ),
+        const SizedBox(width: 20),
+        Column(
+          children: [
+            Text(
+              '$weatherIcon',
+              style: const TextStyle(fontSize: 25),
             )
           ],
         )

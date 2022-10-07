@@ -38,6 +38,22 @@ class MyCustomFormState extends State<MyCustomForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.cyan[100]!),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.cyan[100]!),
+                ),
+                suffixIcon: IconButton(
+                  onPressed: cityController.clear,
+                  icon: const Icon(
+                    Icons.clear,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
               controller: cityController,
               // The validator receives the text that the user has entered.
               validator: (value) {
@@ -56,7 +72,10 @@ class MyCustomFormState extends State<MyCustomForm> {
                     // If the form is valid, display a snackbar. In the real world,
                     // you'd often call a server or save the information in a database.
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Searching...')),
+                      const SnackBar(
+                        content: Text('Searching...'),
+                        duration: Duration(seconds: 2),
+                      ),
                     );
                     globals.notify.value = cityController.text;
                     FocusManager.instance.primaryFocus?.unfocus();

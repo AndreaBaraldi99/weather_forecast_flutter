@@ -22,15 +22,28 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(title: const Text('Weather Forecast ☀️')),
-        body: ListView(
-          physics: const NeverScrollableScrollPhysics(),
-          children: const [
-            MyCustomForm(),
-            LocationLabel(),
-            HomePage(),
-            MapSample()
-          ],
+        body: Center(
+          child: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                  (Colors.blue[600])!,
+                  (Colors.lightBlue[400])!,
+                ])),
+            child: ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              children: const [
+                MyCustomForm(),
+                LocationLabel(),
+                HomePage(),
+                MapSample()
+              ],
+            ),
+          ),
         ),
       ),
       debugShowCheckedModeBanner: false,

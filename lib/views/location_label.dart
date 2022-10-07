@@ -35,7 +35,10 @@ class _LocationLabelState extends State<LocationLabel> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8),
-      child: Text('Displaying weather for: ${location.capitalize()}'),
+      child: Text(
+        'Displaying weather for: ${location.capitalize()}',
+        style: const TextStyle(color: Colors.white),
+      ),
     );
   }
 }

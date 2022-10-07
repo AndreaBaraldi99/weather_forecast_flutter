@@ -60,26 +60,43 @@ class MapSampleState extends State<MapSample> {
     });
   }
 
-/*
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-*/
+  resetPosition() async {
+    GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(latitude, longitude), zoom: 13)));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      height: 250,
-      child: Visibility(
-        visible: isLoaded,
-        child: GoogleMap(
-            mapType: MapType.normal,
-            initialCameraPosition: _kGooglePlex,
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-            markers: markers),
+    return Visibility(
+      visible: isLoaded,
+      child: Container(
+        margin: const EdgeInsets.all(12),
+        height: 210,
+        decoration: BoxDecoration(
+          border: Border.all(color: (Colors.white), width: 5),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
+        child: Stack(children: [
+          GoogleMap(
+              mapType: MapType.normal,
+              initialCameraPosition: _kGooglePlex,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+              markers: markers),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: FloatingActionButton.small(
+              onPressed: () {
+                setState(() {
+                  resetPosition();
+                });
+              },
+              child: const Icon(Icons.location_searching),
+            ),
+          )
+        ]),
       ),
     );
   }
