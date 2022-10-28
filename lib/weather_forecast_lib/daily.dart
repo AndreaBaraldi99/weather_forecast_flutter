@@ -1,6 +1,6 @@
 class Daily {
   List<String>? time;
-  List<double>? weathercode;
+  List<int>? weathercode;
   List<double>? temperature2mMax;
   List<double>? temperature2mMin;
   List<String>? sunrise;
@@ -22,7 +22,7 @@ class Daily {
 
   Daily.fromJson(Map<String, dynamic> json) {
     time = json['time'].cast<String>();
-    weathercode = json['weathercode'].cast<double>();
+    weathercode = json['weathercode'].cast<int>();
     temperature2mMax = json['temperature_2m_max'].cast<double>();
     temperature2mMin = json['temperature_2m_min'].cast<double>();
     sunrise = json['sunrise'].cast<String>();
