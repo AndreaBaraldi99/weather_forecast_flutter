@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:weather_forecast/views/data_layer.dart';
 import 'package:weather_forecast/views/displaying_date.dart';
 import 'package:weather_forecast/views/form.dart';
 import 'package:weather_forecast/views/home_page.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
                   begin: Alignment.topRight,
                   end: Alignment.bottomCenter,
                   colors: [
-                Color.fromARGB(255, 34, 37, 54),
+                Color.fromARGB(255, 24, 26, 38),
                 Color.fromARGB(255, 1, 0, 5),
               ])),
           //height: 500,
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
             children: const [
               SizedBox(height: 100, child: WeatherWidgets()),
               SizedBox(height: 50, child: DateWidget()),
+              DataWidget(),
             ],
           )),
         ),

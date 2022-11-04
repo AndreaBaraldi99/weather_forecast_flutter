@@ -72,7 +72,7 @@ class DateWidgetState extends State<DateWidget> {
             border: Border.all(
               color: (Colors.white),
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(10))),
+            borderRadius: const BorderRadius.all(Radius.circular(50))),
         child: TextButton(
             onPressed: (() {
               if (mounted) {
@@ -81,7 +81,10 @@ class DateWidgetState extends State<DateWidget> {
             }),
             child: Text(
               DateFormat("EEEE, d MMMM").format(dateValue),
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(
+                  color: selected
+                      ? Colors.black
+                      : const Color.fromARGB(255, 232, 232, 232)),
             )));
   }
 
