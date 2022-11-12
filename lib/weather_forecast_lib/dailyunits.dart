@@ -30,15 +30,15 @@ class DailyUnits {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['time'] = this.time;
-    data['weathercode'] = this.weathercode;
-    data['temperature_2m_max'] = this.temperature2mMax;
-    data['temperature_2m_min'] = this.temperature2mMin;
-    data['sunrise'] = this.sunrise;
-    data['sunset'] = this.sunset;
-    data['precipitation_sum'] = this.precipitationSum;
-    data['windspeed_10m_max'] = this.windspeed10mMax;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['time'] = time;
+    data['weathercode'] = weathercode;
+    data['temperature_2m_max'] = temperature2mMax;
+    data['temperature_2m_min'] = temperature2mMin;
+    data['sunrise'] = sunrise;
+    data['sunset'] = sunset;
+    data['precipitation_sum'] = precipitationSum;
+    data['windspeed_10m_max'] = windspeed10mMax;
     return data;
   }
 }

@@ -1,7 +1,4 @@
 import 'dart:convert';
-
-import 'package:weather_forecast/database/weather_forecast_core.dart';
-import 'package:weather_forecast/database/weather_forecast_dto.dart';
 import 'package:weather_forecast/weather_forecast_lib/data.dart';
 
 import 'api.dart';
@@ -12,7 +9,6 @@ class Weather {
   late String _forecastParams;
   late String _apiRootLocation;
   late API _api;
-  late WeatherRequestHandler _requestHandler;
 
   Weather() {
     _apiRootWeather = "https://api.open-meteo.com/v1/forecast?";
@@ -21,7 +17,6 @@ class Weather {
     _apiRootLocation =
         "http://api.positionstack.com/v1/forward?limit=1&access_key=d77ed0d76be5d6b096a219da1e7d8767";
     _api = API();
-    _requestHandler = WeatherRequestHandler();
   }
 
   Future<WeatherForecastResult> getForecast(double? latitude, double? longitude,
@@ -38,16 +33,6 @@ class Weather {
     var weatherResponse = await _api.callAPI(url);
     var result = WeatherForecastResult.fromJson(
         jsonDecode(weatherResponse.responseBody));
-    var dbInsert = WeatherRequest(
-        id: null,
-        date: DateTime.now().toIso8601String(),
-        responseCode: weatherResponse.responseCode,
-        responseBody: weatherResponse.responseBody);
-    _requestHandler.insert(dbInsert);
     return result;
-  }
-
-  void closeDbConnection() {
-    _requestHandler.closeConnection();
   }
 }

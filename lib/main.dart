@@ -5,90 +5,75 @@
 import 'package:flutter/material.dart';
 import 'package:weather_forecast/views/data_layer.dart';
 import 'package:weather_forecast/views/displaying_date.dart';
-import 'package:weather_forecast/views/form.dart';
-import 'package:weather_forecast/views/home_page.dart';
+import 'package:weather_forecast/views/globals.dart';
 import 'package:weather_forecast/views/location_and_phrase_widgets.dart';
-import 'package:weather_forecast/views/location_label.dart';
-import 'package:weather_forecast/views/map_page.dart';
+import 'package:weather_forecast/views/week_day.dart';
+import 'package:weather_forecast/views/globals.dart' as globals;
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  MyAppState createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  bool isLoaded = false;
+  ListView inizializedApp = ListView();
+
+  @override
+  void initState() {
+    super.initState();
+    globals.isLoaded.addListener(() {
+      setState(() {
+        inizializedApp = inizializeApp();
+        isLoaded = true;
+      });
+    });
+    DataSync data = DataSync();
+    data.getInitialData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MainPage',
       home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                Color.fromARGB(255, 24, 26, 38),
-                Color.fromARGB(255, 1, 0, 5),
-              ])),
-          //height: 500,
-          padding: const EdgeInsets.all(8),
-          child: Center(
-              child: ListView(
-            physics: const NeverScrollableScrollPhysics(),
-            children: const [
-              SizedBox(height: 100, child: WeatherWidgets()),
-              SizedBox(height: 50, child: DateWidget()),
-              DataWidget(),
-            ],
-          )),
-        ),
-      ),
+          resizeToAvoidBottomInset: false,
+          body: Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                    Color.fromARGB(255, 24, 26, 38),
+                    Color.fromARGB(255, 1, 0, 5),
+                  ])),
+              child: Center(
+                child: isLoaded
+                    ? inizializedApp
+                    : const CircularProgressIndicator(),
+              ))),
       debugShowCheckedModeBanner: false,
     );
   }
-}
 
-
-
-/*
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Prova',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(title: const Text('Weather Forecast ☀️')),
-        body: Center(
-          child: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                  (Colors.blue[600])!,
-                  (Colors.lightBlue[400])!,
-                ])),
-            child: ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: const [
-                MyCustomForm(),
-                LocationLabel(),
-                HomePage(),
-                MapSample()
-              ],
-            ),
-          ),
-        ),
-      ),
-      debugShowCheckedModeBanner: false,
+  ListView inizializeApp() {
+    return ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        const SizedBox(height: 70, child: WeatherWidgets()),
+        const SizedBox(height: 70, child: WeekDayWidget()),
+        Container(
+            height: 50,
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: const DateWidget()),
+        const DataWidget(),
+      ],
     );
   }
 }
-*/

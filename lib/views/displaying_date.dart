@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_forecast/weather_forecast_lib/geolocator.dart';
+import 'package:weather_forecast/weather_forecast_lib/weather.dart';
+import 'package:weather_forecast/weather_forecast_lib/weatherforecastresult.dart';
+import 'globals.dart' as globals;
 
 class DateWidget extends StatefulWidget {
   const DateWidget({super.key});
@@ -10,29 +14,19 @@ class DateWidget extends StatefulWidget {
 
 class DateWidgetState extends State<DateWidget> {
   final ScrollController _firstController = ScrollController();
-  List<String> dates = List.empty(growable: true); //test value
-
   List<DateSelected> dateSelected = List.empty(growable: true);
+  WeatherForecastResult forecastResult = WeatherForecastResult.noParam();
+  Geolocation geolocation = Geolocation();
+  Weather weather = Weather();
+  int itemsNumber = 0;
 
   @override
   void initState() {
     super.initState();
-    dates.addAll({
-      "2022-11-04T03:02",
-      "2022-11-05T03:02",
-      "2022-11-06T03:02",
-      "2022-11-07T03:02",
-      "2022-11-08T03:02",
-      "2022-11-09T03:02",
-      "2022-11-10T03:02"
+    getData();
+    globals.forecastResultNotifier.addListener(() {
+      getData();
     });
-    for (var element in dates) {
-      if (element == dates[0]) {
-        dateSelected.add(DateSelected(element, true));
-      } else {
-        dateSelected.add(DateSelected(element, false));
-      }
-    }
   }
 
   onPressed(int index) {
@@ -43,7 +37,24 @@ class DateWidgetState extends State<DateWidget> {
         }
         dateSelected[index].selected = true;
       });
+      globals.selectedIndex.value = index;
     }
+  }
+
+  getData() async {
+    forecastResult = globals.forecastResultNotifier.value;
+    if (forecastResult.daily != null && forecastResult.daily!.time != null) {
+      for (var element in forecastResult.daily!.time!) {
+        if (element == forecastResult.daily!.time![0]) {
+          dateSelected.add(DateSelected(element, true));
+        } else {
+          dateSelected.add(DateSelected(element, false));
+        }
+      }
+    }
+    setState(() {
+      itemsNumber = forecastResult.daily!.time!.length;
+    });
   }
 
   @override
@@ -51,7 +62,7 @@ class DateWidgetState extends State<DateWidget> {
     return ListView.separated(
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
-      itemCount: 7,
+      itemCount: itemsNumber,
       controller: _firstController,
       separatorBuilder: (context, index) => const SizedBox(
         width: 10,
@@ -64,13 +75,13 @@ class DateWidgetState extends State<DateWidget> {
   }
 
   Container day(String date, bool selected, int index) {
-    var dateValue = DateFormat("yyyy-MM-ddTHH:mm").parseUTC(date);
+    var dateValue = DateFormat("yyyy-MM-dd").parseUTC(date);
     return Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             color: selectedBackgroundColor(selected),
             border: Border.all(
-              color: (Colors.white),
+              color: (Colors.grey[400]!),
             ),
             borderRadius: const BorderRadius.all(Radius.circular(50))),
         child: TextButton(
@@ -81,10 +92,8 @@ class DateWidgetState extends State<DateWidget> {
             }),
             child: Text(
               DateFormat("EEEE, d MMMM").format(dateValue),
-              style: TextStyle(
-                  color: selected
-                      ? Colors.black
-                      : const Color.fromARGB(255, 232, 232, 232)),
+              style:
+                  TextStyle(color: selected ? Colors.black : Colors.grey[400]),
             )));
   }
 

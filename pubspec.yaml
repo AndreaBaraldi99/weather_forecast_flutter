@@ -76,6 +76,8 @@ flutter:
     - resources/images/haze.png
     - resources/images/cloudy-day.png
     - resources/images/cloud.png
+    - resources/images/heavy-rain.png
+    - resources/images/placeholder-image.png
 
   fonts:
     - family: Lato

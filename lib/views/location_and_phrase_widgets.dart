@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'globals.dart' as globals;
 
 class WeatherWidgets extends StatefulWidget {
   const WeatherWidgets({super.key});
@@ -9,13 +10,25 @@ class WeatherWidgets extends StatefulWidget {
 
 class WeatherWidgetsState extends State<WeatherWidgets> {
   List<String> nicePhrase = List.empty(growable: true);
+  String weatherCode = "";
   WeatherWidgetsState() {
     nicePhrase.add("Don't forget your umbrella today! 🌧️");
     nicePhrase.add("A nice day to go for a walk! ☀️");
+    nicePhrase.add("Not a good day for sunbathing! 🌥️");
   }
   @override
   void initState() {
     super.initState();
+    getData();
+    globals.forecastResultNotifier.addListener(() {
+      getData();
+    });
+  }
+
+  getData() {
+    setState(() {
+      weatherCode = globals.forecastResultNotifier.value.daily!.weatherIcon[0];
+    });
   }
 
   @override
@@ -24,7 +37,7 @@ class WeatherWidgetsState extends State<WeatherWidgets> {
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 2,
       //padding: const EdgeInsets.all(8.0),
-      childAspectRatio: 2.9,
+      childAspectRatio: 2.8,
       //crossAxisSpacing: 10,
       children: [
         Container(
@@ -33,35 +46,40 @@ class WeatherWidgetsState extends State<WeatherWidgets> {
           child: Container(
               padding: const EdgeInsets.fromLTRB(25, 20, 8, 8),
               width: 150,
-              child: _nicePhrase()),
+              child: _nicePhrase(weatherCode)),
         ),
         Container(
           alignment: Alignment.bottomRight,
           margin: const EdgeInsets.fromLTRB(0, 0, 20, 4),
           child: Container(
             height: 46,
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
                 border: Border.all(
-                  color: (Colors.white),
+                  color: (Colors.grey[400]!),
                 ),
                 borderRadius: const BorderRadius.all(Radius.circular(10))),
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               physics: const NeverScrollableScrollPhysics(),
-              children: const [
-                Icon(
-                  Icons.location_on,
-                  size: 20,
-                  color: Color.fromARGB(255, 232, 232, 232),
-                ),
-                Text(
-                  "Milano", //test value
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 232, 232, 232),
+              children: [
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 5, 10),
+                  child: Icon(
+                    Icons.location_on,
+                    size: 20,
+                    color: Colors.grey[200]!,
                   ),
-                  //color: Color.fromARGB(255, 202, 208, 229)),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 2, 0, 0),
+                  child: Text(
+                    "Current location", //test value
+                    overflow: TextOverflow.ellipsis,
+                    style:
+                        TextStyle(color: Colors.grey[200], fontFamily: 'Lato'),
+                  ),
                 ),
               ],
             ),
@@ -71,17 +89,21 @@ class WeatherWidgetsState extends State<WeatherWidgets> {
     );
   }
 
-  Text _nicePhrase() {
-    var weatherCode = 0; //test value
+  Text _nicePhrase(String weatherCode) {
     String chosenText;
-    if (weatherCode == 0 || weatherCode == 1 || weatherCode == 2) {
+    if (weatherCode.contains("☀️") || weatherCode.contains("🌤️")) {
       chosenText = nicePhrase[1];
-    } else {
+    } else if (weatherCode.contains("🌦️") ||
+        weatherCode.contains("🌧️") ||
+        weatherCode.contains("❄️") ||
+        weatherCode.contains("🌩️")) {
       chosenText = nicePhrase[0];
+    } else {
+      chosenText = nicePhrase[2];
     }
     return Text(
       chosenText,
-      style: const TextStyle(color: Color.fromARGB(255, 232, 232, 232)),
+      style: TextStyle(color: Colors.grey[200], fontFamily: 'Lato'),
     );
   }
 }

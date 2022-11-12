@@ -60,25 +60,25 @@ class Result {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['type'] = this.type;
-    data['name'] = this.name;
-    data['number'] = this.number;
-    data['postal_code'] = this.postalCode;
-    data['street'] = this.street;
-    data['confidence'] = this.confidence;
-    data['region'] = this.region;
-    data['region_code'] = this.regionCode;
-    data['county'] = this.county;
-    data['locality'] = this.locality;
-    data['administrative_area'] = this.administrativeArea;
-    data['neighbourhood'] = this.neighbourhood;
-    data['country'] = this.country;
-    data['country_code'] = this.countryCode;
-    data['continent'] = this.continent;
-    data['label'] = this.label;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['type'] = type;
+    data['name'] = name;
+    data['number'] = number;
+    data['postal_code'] = postalCode;
+    data['street'] = street;
+    data['confidence'] = confidence;
+    data['region'] = region;
+    data['region_code'] = regionCode;
+    data['county'] = county;
+    data['locality'] = locality;
+    data['administrative_area'] = administrativeArea;
+    data['neighbourhood'] = neighbourhood;
+    data['country'] = country;
+    data['country_code'] = countryCode;
+    data['continent'] = continent;
+    data['label'] = label;
     return data;
   }
 }
