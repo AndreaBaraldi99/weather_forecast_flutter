@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:weather_forecast/weather_forecast_lib/weatherforecastresult.dart';
+import '../weather_forecast_lib/api.dart';
 import 'globals.dart' as globals;
 
 class WeatherWidgets extends StatefulWidget {
@@ -11,11 +13,19 @@ class WeatherWidgets extends StatefulWidget {
 class WeatherWidgetsState extends State<WeatherWidgets> {
   List<String> nicePhrase = List.empty(growable: true);
   String weatherCode = "";
+  String location = "";
+  WeatherForecastResult result = WeatherForecastResult();
+  API api = API();
+  String rootUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
+  String seqUrl =
+      ".json?types=place&access_token=pk.eyJ1IjoiYW5kcmVhOTlyIiwiYSI6ImNsYXdiODNzYzBlZ3QzcG1wejR6ZGVjaWIifQ.cxuEHMeg85zMNNwqfJbSlg";
+
   WeatherWidgetsState() {
     nicePhrase.add("Don't forget your umbrella today! 🌧️");
     nicePhrase.add("A nice day to go for a walk! ☀️");
     nicePhrase.add("Not a good day for sunbathing! 🌥️");
   }
+
   @override
   void initState() {
     super.initState();
@@ -26,8 +36,12 @@ class WeatherWidgetsState extends State<WeatherWidgets> {
   }
 
   getData() {
+    result = globals.forecastResultNotifier.value;
+    if (location.isEmpty) {
+      api.callAPI(url);
+    }
     setState(() {
-      weatherCode = globals.forecastResultNotifier.value.daily!.weatherIcon[0];
+      weatherCode = result.daily!.weatherIcon[0];
     });
   }
 
