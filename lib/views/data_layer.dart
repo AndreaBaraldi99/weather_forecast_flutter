@@ -117,32 +117,36 @@ class DataWidgetState extends State<DataWidget> {
               crossAxisCount: 2,
               children: [
                 Container(
-                  margin: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                  margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                   alignment: Alignment.topCenter,
                   child: image,
                 ),
                 Container(
+                  margin: const EdgeInsets.only(top: 8),
                   alignment: Alignment.center,
                   child: GridView.count(
                     shrinkWrap: true,
                     crossAxisCount: 2,
                     children: [
                       Container(
-                        margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        margin: const EdgeInsets.only(left: 10),
                         child: Text(
                           maxTemp,
                           style: TextStyle(
                               color: Colors.grey[200],
-                              fontSize: 35,
+                              fontSize: 45,
                               fontFamily: 'Lato'),
                         ),
                       ),
-                      Text(
-                        minTemp,
-                        style: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 35,
-                            fontFamily: 'Lato'),
+                      Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          minTemp,
+                          style: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 45,
+                              fontFamily: 'Lato'),
+                        ),
                       )
                     ],
                   ),
