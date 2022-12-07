@@ -7,6 +7,7 @@ import 'package:weather_forecast/views/data_layer.dart';
 import 'package:weather_forecast/views/displaying_date.dart';
 import 'package:weather_forecast/views/globals.dart';
 import 'package:weather_forecast/views/location_and_phrase_widgets.dart';
+import 'package:weather_forecast/views/menu_button.dart';
 import 'package:weather_forecast/views/week_day.dart';
 import 'package:weather_forecast/views/globals.dart' as globals;
 
@@ -73,6 +74,15 @@ class MyAppState extends State<MyApp> {
             margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: const DateWidget()),
         const DataWidget(),
+        UnconstrainedBox(
+          child: Container(
+              width: 80,
+              decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 18, 26, 44),
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
+              alignment: Alignment.center,
+              child: const MenuButton()),
+        )
       ],
     );
   }

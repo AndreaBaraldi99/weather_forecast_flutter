@@ -11,6 +11,7 @@ class WeatherForecastResult {
   double? elevation;
   DailyUnits? dailyUnits;
   Daily? daily;
+  String location = "";
 
   WeatherForecastResult(
       {this.latitude,
@@ -22,8 +23,6 @@ class WeatherForecastResult {
       this.elevation,
       this.dailyUnits,
       this.daily});
-
-  WeatherForecastResult.noParam();
 
   WeatherForecastResult.fromJson(Map<String, dynamic> json) {
     latitude = json['latitude'];

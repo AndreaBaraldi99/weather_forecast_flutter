@@ -15,7 +15,7 @@ class DateWidget extends StatefulWidget {
 class DateWidgetState extends State<DateWidget> {
   final ScrollController _firstController = ScrollController();
   List<DateSelected> dateSelected = List.empty(growable: true);
-  WeatherForecastResult forecastResult = WeatherForecastResult.noParam();
+  WeatherForecastResult forecastResult = WeatherForecastResult();
   Geolocation geolocation = Geolocation();
   Weather weather = Weather();
   int itemsNumber = 0;

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:weather_forecast/weather_forecast_lib/geolocation.dart';
+import 'package:weather_forecast/weather_forecast_lib/location.dart';
 import 'package:weather_forecast/weather_forecast_lib/weatherforecastresult.dart';
 import '../weather_forecast_lib/api.dart';
 import 'globals.dart' as globals;
@@ -19,6 +21,8 @@ class WeatherWidgetsState extends State<WeatherWidgets> {
   String rootUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
   String seqUrl =
       ".json?types=place&access_token=pk.eyJ1IjoiYW5kcmVhOTlyIiwiYSI6ImNsYXdiODNzYzBlZ3QzcG1wejR6ZGVjaWIifQ.cxuEHMeg85zMNNwqfJbSlg";
+  Location locator = Location();
+  Geocoding geocoding = Geocoding();
 
   WeatherWidgetsState() {
     nicePhrase.add("Don't forget your umbrella today! 🌧️");
@@ -35,14 +39,20 @@ class WeatherWidgetsState extends State<WeatherWidgets> {
     });
   }
 
-  getData() {
+  getData() async {
     result = globals.forecastResultNotifier.value;
-    if (location.isEmpty) {
-      api.callAPI(url);
+    if (location.isEmpty && result.location.isEmpty) {
+      geocoding = await locator.getPlaceName(result.latitude, result.longitude);
+      setState(() {
+        location = geocoding.features!.first.text!;
+        weatherCode = result.daily!.weatherIcon[0];
+      });
+    } else {
+      setState(() {
+        location = result.location;
+        weatherCode = result.daily!.weatherIcon[0];
+      });
     }
-    setState(() {
-      weatherCode = result.daily!.weatherIcon[0];
-    });
   }
 
   @override
@@ -87,9 +97,10 @@ class WeatherWidgetsState extends State<WeatherWidgets> {
                   ),
                 ),
                 Container(
+                  constraints: const BoxConstraints(maxWidth: 100),
                   margin: const EdgeInsets.fromLTRB(0, 2, 0, 0),
                   child: Text(
-                    "Current location", //test value
+                    location,
                     overflow: TextOverflow.ellipsis,
                     style:
                         TextStyle(color: Colors.grey[200], fontFamily: 'Lato'),
