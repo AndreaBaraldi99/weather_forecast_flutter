@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:weather_forecast/weather_forecast_lib/weatherforecastresult.dart';
-import 'globals.dart' as globals;
+import 'package:weather_forecast/weather_forecast_lib/weather_API/weatherforecastresult.dart';
+import '../weather_forecast_lib/globals/globals.dart' as globals;
 
 class DataWidget extends StatefulWidget {
   const DataWidget({super.key});
@@ -129,22 +129,22 @@ class DataWidgetState extends State<DataWidget> {
                     crossAxisCount: 2,
                     children: [
                       Container(
-                        margin: const EdgeInsets.only(left: 10),
+                        margin: const EdgeInsets.only(left: 5),
                         child: Text(
                           maxTemp,
                           style: TextStyle(
                               color: Colors.grey[200],
-                              fontSize: 45,
+                              fontSize: 42,
                               fontFamily: 'Lato'),
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(left: 10),
+                        margin: const EdgeInsets.only(left: 5),
                         child: Text(
                           minTemp,
                           style: TextStyle(
                               color: Colors.grey[400],
-                              fontSize: 45,
+                              fontSize: 42,
                               fontFamily: 'Lato'),
                         ),
                       )

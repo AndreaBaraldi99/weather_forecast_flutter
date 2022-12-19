@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:weather_forecast/weather_forecast_lib/weatherforecastresult.dart';
-import 'globals.dart' as globals;
+import 'package:weather_forecast/weather_forecast_lib/weather_API/weatherforecastresult.dart';
+import '../weather_forecast_lib/globals/globals.dart' as globals;
 
 class WeekDayWidget extends StatefulWidget {
   const WeekDayWidget({super.key});

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:weather_forecast/weather_forecast_lib/geolocator.dart';
-import 'package:weather_forecast/weather_forecast_lib/weather.dart';
-import 'package:weather_forecast/weather_forecast_lib/weatherforecastresult.dart';
-import 'globals.dart' as globals;
+import 'package:weather_forecast/weather_forecast_lib/services/geolocator.dart';
+import 'package:weather_forecast/weather_forecast_lib/core/weather.dart';
+import 'package:weather_forecast/weather_forecast_lib/weather_API/weatherforecastresult.dart';
+import '../weather_forecast_lib/globals/globals.dart' as globals;
 
 class DateWidget extends StatefulWidget {
   const DateWidget({super.key});

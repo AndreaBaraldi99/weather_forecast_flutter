@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:weather_forecast/views/globals.dart';
-import 'package:weather_forecast/weather_forecast_lib/geolocation.dart';
-import 'package:weather_forecast/weather_forecast_lib/location.dart';
-import 'package:weather_forecast/views/globals.dart' as globals;
+import 'package:weather_forecast/extensions/string_extensions.dart';
+import 'package:weather_forecast/weather_forecast_lib/globals/globals.dart';
+import 'package:weather_forecast/weather_forecast_lib/geocoding_API/geolocation.dart';
+import 'package:weather_forecast/weather_forecast_lib/geocoding_API/location.dart';
 
 class MenuButton extends StatefulWidget {
   const MenuButton({super.key});
@@ -69,7 +69,11 @@ class MenuButtonState extends State<MenuButton> {
 
   searchData(String location) async {
     var result = await locator.getCoord(location);
-    dataSync.searchWeather(result.features!.first.center![1],
-        result.features!.first.center![0], result.features!.first.text!);
+    if (result.features == null) {
+      dataSync.searchWeather(1000, 1000, location.capitalize());
+    } else {
+      dataSync.searchWeather(result.features!.first.center![1],
+          result.features!.first.center![0], result.features!.first.text!);
+    }
   }
 }

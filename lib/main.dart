@@ -5,11 +5,12 @@
 import 'package:flutter/material.dart';
 import 'package:weather_forecast/views/data_layer.dart';
 import 'package:weather_forecast/views/displaying_date.dart';
-import 'package:weather_forecast/views/globals.dart';
+import 'package:weather_forecast/weather_forecast_lib/globals/globals.dart';
 import 'package:weather_forecast/views/location_and_phrase_widgets.dart';
 import 'package:weather_forecast/views/menu_button.dart';
 import 'package:weather_forecast/views/week_day.dart';
-import 'package:weather_forecast/views/globals.dart' as globals;
+import 'package:weather_forecast/weather_forecast_lib/globals/globals.dart'
+    as globals;
 
 void main() {
   runApp(const MyApp());

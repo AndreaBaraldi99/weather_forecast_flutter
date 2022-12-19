@@ -12,6 +12,8 @@ class WeatherForecastResult {
   DailyUnits? dailyUnits;
   Daily? daily;
   String location = "";
+  bool? emptyResponse = true;
+  String timeStamp = DateTime.now().toIso8601String();
 
   WeatherForecastResult(
       {this.latitude,

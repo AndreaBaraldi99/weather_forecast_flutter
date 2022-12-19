@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:weather_forecast/weather_forecast_lib/geolocation.dart';
-import 'package:weather_forecast/weather_forecast_lib/location.dart';
-import 'package:weather_forecast/weather_forecast_lib/weatherforecastresult.dart';
-import '../weather_forecast_lib/api.dart';
-import 'globals.dart' as globals;
+import 'package:intl/intl.dart';
+import 'package:weather_forecast/weather_forecast_lib/geocoding_API/geolocation.dart';
+import 'package:weather_forecast/weather_forecast_lib/geocoding_API/location.dart';
+import 'package:weather_forecast/weather_forecast_lib/weather_API/weatherforecastresult.dart';
+import '../weather_forecast_lib/API_Connection/api.dart';
+import '../weather_forecast_lib/globals/globals.dart' as globals;
 
 class WeatherWidgets extends StatefulWidget {
   const WeatherWidgets({super.key});
@@ -13,7 +14,6 @@ class WeatherWidgets extends StatefulWidget {
 }
 
 class WeatherWidgetsState extends State<WeatherWidgets> {
-  List<String> nicePhrase = List.empty(growable: true);
   String weatherCode = "";
   String location = "";
   WeatherForecastResult result = WeatherForecastResult();
@@ -23,12 +23,7 @@ class WeatherWidgetsState extends State<WeatherWidgets> {
       ".json?types=place&access_token=pk.eyJ1IjoiYW5kcmVhOTlyIiwiYSI6ImNsYXdiODNzYzBlZ3QzcG1wejR6ZGVjaWIifQ.cxuEHMeg85zMNNwqfJbSlg";
   Location locator = Location();
   Geocoding geocoding = Geocoding();
-
-  WeatherWidgetsState() {
-    nicePhrase.add("Don't forget your umbrella today! 🌧️");
-    nicePhrase.add("A nice day to go for a walk! ☀️");
-    nicePhrase.add("Not a good day for sunbathing! 🌥️");
-  }
+  String lastUpdate = "";
 
   @override
   void initState() {
@@ -43,14 +38,20 @@ class WeatherWidgetsState extends State<WeatherWidgets> {
     result = globals.forecastResultNotifier.value;
     if (location.isEmpty && result.location.isEmpty) {
       geocoding = await locator.getPlaceName(result.latitude, result.longitude);
+      var timeStamp =
+          DateFormat("yyyy-MM-ddTHH:mm:ss").parseUTC(result.timeStamp);
       setState(() {
         location = geocoding.features!.first.text!;
         weatherCode = result.daily!.weatherIcon[0];
+        lastUpdate = DateFormat("dd/MM HH:mm:ss").format(timeStamp);
       });
     } else {
+      var timeStamp =
+          DateFormat("yyyy-MM-ddTHH:mm:ss").parseUTC(result.timeStamp);
       setState(() {
         location = result.location;
         weatherCode = result.daily!.weatherIcon[0];
+        lastUpdate = DateFormat("dd/MM HH:mm:ss").format(timeStamp);
       });
     }
   }
@@ -60,9 +61,7 @@ class WeatherWidgetsState extends State<WeatherWidgets> {
     return GridView.count(
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 2,
-      //padding: const EdgeInsets.all(8.0),
       childAspectRatio: 2.8,
-      //crossAxisSpacing: 10,
       children: [
         Container(
           alignment: Alignment.centerLeft,
@@ -70,7 +69,10 @@ class WeatherWidgetsState extends State<WeatherWidgets> {
           child: Container(
               padding: const EdgeInsets.fromLTRB(25, 20, 8, 8),
               width: 150,
-              child: _nicePhrase(weatherCode)),
+              child: Text(
+                "Last update: $lastUpdate",
+                style: TextStyle(color: Colors.grey[400]!),
+              )),
         ),
         Container(
           alignment: Alignment.bottomRight,
@@ -111,24 +113,6 @@ class WeatherWidgetsState extends State<WeatherWidgets> {
           ),
         ),
       ],
-    );
-  }
-
-  Text _nicePhrase(String weatherCode) {
-    String chosenText;
-    if (weatherCode.contains("☀️") || weatherCode.contains("🌤️")) {
-      chosenText = nicePhrase[1];
-    } else if (weatherCode.contains("🌦️") ||
-        weatherCode.contains("🌧️") ||
-        weatherCode.contains("❄️") ||
-        weatherCode.contains("🌩️")) {
-      chosenText = nicePhrase[0];
-    } else {
-      chosenText = nicePhrase[2];
-    }
-    return Text(
-      chosenText,
-      style: TextStyle(color: Colors.grey[200], fontFamily: 'Lato'),
     );
   }
 }
